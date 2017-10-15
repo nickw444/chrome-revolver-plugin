@@ -3,14 +3,17 @@ var ReloadPlugin = function (settings) {
   self.update(settings);
   self.isGoing = false;
 
-  chrome.tabs.onActivated.addListener(function (activeInfo) {
-    chrome.tabs.get(activeInfo.tabId, function (t) {
-      self.currentTab = t;
-      if (self.isGoing) {
-        self.startTimer();
-      }
-    });
-  });
+  chrome.tabs.create({}, () => {});
+
+  // chrome.tabs.onActivated.addListener(function (activeInfo) {
+  //   console.log(activeInfo);
+  //   chrome.tabs.get(activeInfo.tabId, function (t) {
+  //     self.currentTab = t;
+  //     if (self.isGoing) {
+  //       self.startTimer();
+  //     }
+  //   });
+  // });
 };
 
 ReloadPlugin.prototype.update = function (settings) {
@@ -48,7 +51,7 @@ ReloadPlugin.prototype.startTimer = function () {
 
 ReloadPlugin.prototype.getActiveTab = function (cb) {
   chrome.tabs.query({
-    'active': true, 
+    'active': true,
     'windowId': self.currentWindow
   }, function (tab) {
     cb(tab[0]);
